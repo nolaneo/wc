@@ -1,1468 +1,187 @@
-<DOCTYPE! html>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<head>
-		<title>Friends Fivever World Cup Sweepstakes</title>
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" type="text/css" href="wc.css">
-<script type="text/javascript">
+	<title>FFE WC Sweepstakes</title>
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-47908774-1']);
-  _gaq.push(['_trackPageview']);
+	<script src="js/knockout.js"></script> 
+	<script src="js/jquery.min.js"></script> 
+	<script src="js/wc.js"></script> 
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+    <link href="css/wc.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
 
-</script>	</head>	
-	<body>
-		<div class="main-container">
-			<h1>Friends Fivever World Cup Sweepstakes</h1>
-			<p style='color:#777; text-align:center; font-size:10px;'>Last updated : 13-Jun-2014 22:01:12</p>
-			<hr/>
+    <script type="text/javascript">
 
-			<table>
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-47908774-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+	</script>
+
+</head>
+<body>
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			generateTeams();
+			getTeamPoints();
+			getMatches();
+			ko.applyBindings(ViewModel);
+		})
+		
+	</script>
+	<div class="main-container">
+		<h1>Friends Fivever World Cup Sweepstakes</h1>
+		<hr/>
+		<table class="main-table">
+			<thead>
+				<th>Player</th>
+				<th>Teams</th>
+				<th>MP</th>
+				<th>W</th>
+				<th>D</th>
+				<th>L</th>
+				<th>GF</th>
+				<th>GA</th>
+				<th>GD</th>
+				<th>PTS</th>
+			</thead>
+			<tbody data-bind="foreach: players">
+		        <tr>
+		            <td style="width: 200px;">
+		            	<img data-bind="attr{src: 'images/lads/' + $data.playerName() + '.png'}" style="height:32px;width:32px;float:left;"/>
+		            	<div data-bind="text: playerName" style="margin-left:10px;float:left"></div>
+		            </td>
+
+		            <td class="flags" data-bind="foreach: teams">
+		            	<img data-bind="attr{src: 'images/flags/small/' + $data.teamName() + '.png', title:$data.teamName}"/>
+		            </td>
+		            <td class="text-center" data-bind="text: matchesPlayed"></td>
+		            <td class="text-center" data-bind="text: won"></td>
+		            <td class="text-center" data-bind="text: draw"></td>
+		            <td class="text-center" data-bind="text: lost"></td>
+		            <td class="text-center" data-bind="text: goalsFor"></td>
+		            <td class="text-center" data-bind="text: goalsAgainst"></td>
+		            <td class="text-center" data-bind="text: goalDifference"></td>
+		            <td class="text-center" data-bind="text: points"></td>
+		        </tr>    
+			</tbody>
+		</table>
+
+		<div>
+			<div data-bind="foreach: liveMatches">
+				<div class='match'  data-bind="attr{style: $index() % 2 == 0 ? '' : 'background-color:#3c3c3c'}" >
+
+					<div class='text-center matchcontainer'>
+						<div class='floatleft text-right pad' data-bind="text: $data.home().player.playerName()"></div>
+						<img data-bind="attr{src: 'images/lads/' + $data.home().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='center-sec'></div>
+						<img data-bind="attr{src: 'images/lads/' + $data.away().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<div style='clear:both'></div>
+					</div>
+					<div class='text-center matchcontainer'>
+						<div class='floatleft text-right pad' data-bind="text: $data.home().teamName()"></div>
+						<img data-bind="attr{src: 'images/flags/large/' + $data.home().teamName().toUpperCase() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='center-sec' data-bind="text: score"></div>
+						<img data-bind="attr{src: 'images/flags/large/' + $data.away().teamName() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='floatright text-left pad' data-bind="text: $data.away().teamName()"></div>
+						<div style='clear:both'></div>
+					</div>
+					<div class='text-center matchcontainer location' data-bind="text: dateString"></div>
+				</div>
+			</div><!--end live-->
+		</div>
+
+
+		<div class="table-title">A</div>
+		<div class="table-title alternate">B</div>
+		<div class="table-title">C</div>
+		<div class="table-title alternate">D</div>
+		<div class="table-title">E</div>
+		<div class="table-title alternate">F</div>
+		<div class="table-title">G</div>
+		<div class="table-title alternate">H</div>
+		<div style="clear:both"></div>
+
+		<div data-bind="foreach: groups">
+			<table style="width:100px;float:left;font-size:7pt;border-left:1px solid #777; border-right:1px solid #777; ">
 				<thead>
-					<th>NAME</th>
-					<th>TEAMS</th>
+					<th>Group</th>
+					<th></th>
 					<th>MP</th>
-					<th>W</th>
-					<th>D</th>
-					<th>L</th>
-					<th>GF</th>
-					<th>GA</th>
-					<th>GD</th>
-					<th>PTS</th>
+					<th>P</th>
 				</thead>
-				<tbody>
-					<!--Points -->					<tr>
-						<td>Eoin</td>
-						<td class='flags'><img src='flags/small/Colombia.png' title='Colombia'><img src='flags/small/Cameroon.png' title='Cameroon'><img src='flags/small/Ghana.png' title='Ghana'><img src='flags/small/Netherlands.png' title='Netherlands'></td>
-						<td class='text-center'>2</td>
-						<td class='text-center'>1</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>1</td>
-						<td class='text-center'>5</td>
-						<td class='text-center'>2</td>
-						<td class='text-center'>3</td>
-						<td class='text-center'>3</td>
-					</tr>					<tr>
-						<td>Dave</td>
-						<td class='flags'><img src='flags/small/Ecuador.png' title='Ecuador'><img src='flags/small/Iran.png' title='Iran'><img src='flags/small/United States.png' title='United States'><img src='flags/small/Brazil.png' title='Brazil'></td>
-						<td class='text-center'>1</td>
-						<td class='text-center'>1</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>3</td>
-						<td class='text-center'>1</td>
-						<td class='text-center'>2</td>
-						<td class='text-center'>3</td>
-					</tr>					<tr>
-						<td>Niall</td>
-						<td class='flags'><img src='flags/small/Spain.png' title='Spain'><img src='flags/small/Nigeria.png' title='Nigeria'><img src='flags/small/Mexico.png' title='Mexico'><img src='flags/small/Portugal.png' title='Portugal'></td>
-						<td class='text-center'>2</td>
-						<td class='text-center'>1</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>1</td>
-						<td class='text-center'>2</td>
-						<td class='text-center'>5</td>
-						<td class='text-center'>-3</td>
-						<td class='text-center'>3</td>
-					</tr>					<tr>
-						<td>Alan</td>
-						<td class='flags'><img src='flags/small/South Korea.png' title='South Korea'><img src='flags/small/Germany.png' title='Germany'><img src='flags/small/Greece.png' title='Greece'><img src='flags/small/England.png' title='England'></td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-					</tr>					<tr>
-						<td>Cian</td>
-						<td class='flags'><img src='flags/small/Switzerland.png' title='Switzerland'><img src='flags/small/Australia.png' title='Australia'><img src='flags/small/Costa Rica.png' title='Costa Rica'><img src='flags/small/Russia.png' title='Russia'></td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-					</tr>					<tr>
-						<td>Dan & Joel</td>
-						<td class='flags'><img src='flags/small/Argentina.png' title='Argentina'><img src='flags/small/Chile.png' title='Chile'><img src='flags/small/Algeria.png' title='Algeria'><img src='flags/small/Honduras.png' title='Honduras'></td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-					</tr>					<tr>
-						<td>Ming</td>
-						<td class='flags'><img src='flags/small/Japan.png' title='Japan'><img src='flags/small/France.png' title='France'><img src='flags/small/Uruguay.png' title='Uruguay'><img src='flags/small/Bosnia-Herzegovina.png' title='Bosnia-Herzegovina'></td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-					</tr>					<tr>
-						<td>Shane</td>
-						<td class='flags'><img src='flags/small/Belgium.png' title='Belgium'><img src='flags/small/Italy.png' title='Italy'><img src='flags/small/Croatia.png' title='Croatia'><img src='flags/small/Ivory Coast.png' title='Ivory Coast'></td>
-						<td class='text-center'>1</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>0</td>
-						<td class='text-center'>1</td>
-						<td class='text-center'>1</td>
-						<td class='text-center'>3</td>
-						<td class='text-center'>-2</td>
-						<td class='text-center'>0</td>
-					</tr><!--END Points-->
+				<tbody data-bind="foreach: $data">
+					<tr>
+						<td><img data-bind="attr{src: 'images/flags/small/' + $data.teamName() + '.png', title:$data.teamName}"></td>
+						<td data-bind="text: $data.teamCode()"></td>
+						<td data-bind="text: $data.matchesPlayed()"></td>
+						<td data-bind="text: $data.points()"></td>
+					</tr>
 				</tbody>
 			</table>
-
-			<!--Match Schedule-->			<div style='width:800px; text-align:center; margin-bottom:50px;'><a style='color:#777; font-weight:300; text-size:20px; text-decoration: none;' href="#upcoming">&#x25BC; JUMP TO UPCOMING GAMES &#x25BC;</a></div>
-			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dave</div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='floatright text-left pad'>Shane</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>BRAZIL</div>
-					<img src='flags/large/Brazil.png' style='float:left'>
-					<div class='center-sec'>3 - 1</div>
-					<img src='flags/large/Croatia.png' style='float:left'>
-					<div class='floatright text-left pad'>CROATIA</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer location'>
-					
-					12/06 21:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Niall</div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='floatright text-left pad'>Eoin</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>MEXICO</div>
-					<img src='flags/large/Mexico.png' style='float:left'>
-					<div class='center-sec'>1 - 0</div>
-					<img src='flags/large/Cameroon.png' style='float:left'>
-					<div class='floatright text-left pad'>CAMEROON</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer location'>
-					
-					13/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Niall</div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='floatright text-left pad'>Eoin</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>SPAIN</div>
-					<img src='flags/large/Spain.png' style='float:left'>
-					<div class='center-sec'>1 - 5</div>
-					<img src='flags/large/Netherlands.png' style='float:left'>
-					<div class='floatright text-left pad'>NETHERLANDS</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer location'>
-					
-					13/06 20:00
-				</div>
-
-			</div>			<div id='upcoming'> </div>
-			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dan & Joel</div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='floatright text-left pad'>Cian</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>CHILE</div>
-					<img src='flags/large/Chile.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Australia.png' style='float:left'>
-					<div class='floatright text-left pad'>AUSTRALIA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.40</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 4.25</div></div>
-					<div class="textpadright">9.00</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					13/06 23:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Eoin</div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='floatright text-left pad'>Alan</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>COLOMBIA</div>
-					<img src='flags/large/Colombia.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Greece.png' style='float:left'>
-					<div class='floatright text-left pad'>GREECE</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.85</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.25</div></div>
-					<div class="textpadright">4.75</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					14/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Ming</div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='floatright text-left pad'>Cian</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>URUGUAY</div>
-					<img src='flags/large/Uruguay.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Costa Rica.png' style='float:left'>
-					<div class='floatright text-left pad'>COSTA RICA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.42</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 4.25</div></div>
-					<div class="textpadright">8.00</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					14/06 20:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Alan</div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='floatright text-left pad'>Shane</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>ENGLAND</div>
-					<img src='flags/large/England.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Italy.png' style='float:left'>
-					<div class='floatright text-left pad'>ITALY</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.90</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 2.90</div></div>
-					<div class="textpadright">2.70</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					14/06 23:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Shane</div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='floatright text-left pad'>Ming</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>IVORY COAST</div>
-					<img src='flags/large/Ivory Coast.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Japan.png' style='float:left'>
-					<div class='floatright text-left pad'>JAPAN</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.60</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.10</div></div>
-					<div class="textpadright">2.85</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					15/06 02:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Cian</div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='floatright text-left pad'>Dave</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>SWITZERLAND</div>
-					<img src='flags/large/Switzerland.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Ecuador.png' style='float:left'>
-					<div class='floatright text-left pad'>ECUADOR</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.50</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.00</div></div>
-					<div class="textpadright">3.10</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					15/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Ming</div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='floatright text-left pad'>Dan & Joel</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>FRANCE</div>
-					<img src='flags/large/France.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Honduras.png' style='float:left'>
-					<div class='floatright text-left pad'>HONDURAS</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.35</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 4.75</div></div>
-					<div class="textpadright">9.00</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					15/06 20:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dan & Joel</div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='floatright text-left pad'>Ming</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>ARGENTINA</div>
-					<img src='flags/large/Argentina.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Bosnia-Herzegovina.png' style='float:left'>
-					<div class='floatright text-left pad'>BOSNIA-HERZEGOVINA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.42</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 4.50</div></div>
-					<div class="textpadright">7.50</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					15/06 23:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Alan</div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='floatright text-left pad'>Niall</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>GERMANY</div>
-					<img src='flags/large/Germany.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Portugal.png' style='float:left'>
-					<div class='floatright text-left pad'>PORTUGAL</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.10</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.25</div></div>
-					<div class="textpadright">3.60</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					16/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dave</div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='floatright text-left pad'>Niall</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>IRAN</div>
-					<img src='flags/large/Iran.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Nigeria.png' style='float:left'>
-					<div class='floatright text-left pad'>NIGERIA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">3.50</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.10</div></div>
-					<div class="textpadright">2.20</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					16/06 20:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Eoin</div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='floatright text-left pad'>Dave</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>GHANA</div>
-					<img src='flags/large/Ghana.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/United States.png' style='float:left'>
-					<div class='floatright text-left pad'>UNITED STATES</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.55</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.10</div></div>
-					<div class="textpadright">2.90</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					16/06 23:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Shane</div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='floatright text-left pad'>Dan & Joel</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>BELGIUM</div>
-					<img src='flags/large/Belgium.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Algeria.png' style='float:left'>
-					<div class='floatright text-left pad'>ALGERIA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.48</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 4.00</div></div>
-					<div class="textpadright">7.50</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					17/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dave</div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='floatright text-left pad'>Niall</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>BRAZIL</div>
-					<img src='flags/large/Brazil.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Mexico.png' style='float:left'>
-					<div class='floatright text-left pad'>MEXICO</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.30</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 5.00</div></div>
-					<div class="textpadright">11.00</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					17/06 20:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Cian</div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='floatright text-left pad'>Alan</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>RUSSIA</div>
-					<img src='flags/large/Russia.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/South Korea.png' style='float:left'>
-					<div class='floatright text-left pad'>SOUTH KOREA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.30</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.10</div></div>
-					<div class="textpadright">3.30</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					17/06 23:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Cian</div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='floatright text-left pad'>Eoin</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>AUSTRALIA</div>
-					<img src='flags/large/Australia.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Netherlands.png' style='float:left'>
-					<div class='floatright text-left pad'>NETHERLANDS</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">N/A</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ N/A</div></div>
-					<div class="textpadright">N/A</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					18/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Niall</div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='floatright text-left pad'>Dan & Joel</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>SPAIN</div>
-					<img src='flags/large/Spain.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Chile.png' style='float:left'>
-					<div class='floatright text-left pad'>CHILE</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">N/A</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ N/A</div></div>
-					<div class="textpadright">N/A</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					18/06 20:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Eoin</div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='floatright text-left pad'>Shane</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>CAMEROON</div>
-					<img src='flags/large/Cameroon.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Croatia.png' style='float:left'>
-					<div class='floatright text-left pad'>CROATIA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">5.25</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.60</div></div>
-					<div class="textpadright">1.68</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					18/06 23:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Eoin</div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='floatright text-left pad'>Shane</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>COLOMBIA</div>
-					<img src='flags/large/Colombia.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Ivory Coast.png' style='float:left'>
-					<div class='floatright text-left pad'>IVORY COAST</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.10</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.25</div></div>
-					<div class="textpadright">3.60</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					19/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Ming</div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='floatright text-left pad'>Alan</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>URUGUAY</div>
-					<img src='flags/large/Uruguay.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/England.png' style='float:left'>
-					<div class='floatright text-left pad'>ENGLAND</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.65</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.20</div></div>
-					<div class="textpadright">2.70</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					19/06 20:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Ming</div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='floatright text-left pad'>Alan</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>JAPAN</div>
-					<img src='flags/large/Japan.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Greece.png' style='float:left'>
-					<div class='floatright text-left pad'>GREECE</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.35</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.20</div></div>
-					<div class="textpadright">3.10</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					19/06 23:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Shane</div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='floatright text-left pad'>Cian</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>ITALY</div>
-					<img src='flags/large/Italy.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Costa Rica.png' style='float:left'>
-					<div class='floatright text-left pad'>COSTA RICA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.42</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 4.30</div></div>
-					<div class="textpadright">8.00</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					20/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Cian</div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='floatright text-left pad'>Ming</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>SWITZERLAND</div>
-					<img src='flags/large/Switzerland.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/France.png' style='float:left'>
-					<div class='floatright text-left pad'>FRANCE</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">4.00</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.25</div></div>
-					<div class="textpadright">2.00</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					20/06 20:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dan & Joel</div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='floatright text-left pad'>Dave</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>HONDURAS</div>
-					<img src='flags/large/Honduras.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Ecuador.png' style='float:left'>
-					<div class='floatright text-left pad'>ECUADOR</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">4.75</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.40</div></div>
-					<div class="textpadright">1.80</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					20/06 23:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dan & Joel</div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='floatright text-left pad'>Dave</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>ARGENTINA</div>
-					<img src='flags/large/Argentina.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Iran.png' style='float:left'>
-					<div class='floatright text-left pad'>IRAN</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.17</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 7.00</div></div>
-					<div class="textpadright">16.00</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					21/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Alan</div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='floatright text-left pad'>Eoin</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>GERMANY</div>
-					<img src='flags/large/Germany.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Ghana.png' style='float:left'>
-					<div class='floatright text-left pad'>GHANA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.38</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 4.75</div></div>
-					<div class="textpadright">8.00</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					21/06 20:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Niall</div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='floatright text-left pad'>Ming</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>NIGERIA</div>
-					<img src='flags/large/Nigeria.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Bosnia-Herzegovina.png' style='float:left'>
-					<div class='floatright text-left pad'>BOSNIA-HERZEGOVINA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">3.10</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.30</div></div>
-					<div class="textpadright">2.30</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					21/06 23:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Shane</div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='floatright text-left pad'>Cian</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>BELGIUM</div>
-					<img src='flags/large/Belgium.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Russia.png' style='float:left'>
-					<div class='floatright text-left pad'>RUSSIA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.20</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.20</div></div>
-					<div class="textpadright">3.40</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					22/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Alan</div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='floatright text-left pad'>Dan & Joel</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>SOUTH KOREA</div>
-					<img src='flags/large/South Korea.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Algeria.png' style='float:left'>
-					<div class='floatright text-left pad'>ALGERIA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.25</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.20</div></div>
-					<div class="textpadright">3.30</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					22/06 20:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dave</div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='floatright text-left pad'>Niall</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>UNITED STATES</div>
-					<img src='flags/large/United States.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Portugal.png' style='float:left'>
-					<div class='floatright text-left pad'>PORTUGAL</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">5.00</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.60</div></div>
-					<div class="textpadright">1.72</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					22/06 23:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Cian</div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='floatright text-left pad'>Niall</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>AUSTRALIA</div>
-					<img src='flags/large/Australia.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Spain.png' style='float:left'>
-					<div class='floatright text-left pad'>SPAIN</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">N/A</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ N/A</div></div>
-					<div class="textpadright">N/A</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					23/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Eoin</div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='floatright text-left pad'>Dan & Joel</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>NETHERLANDS</div>
-					<img src='flags/large/Netherlands.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Chile.png' style='float:left'>
-					<div class='floatright text-left pad'>CHILE</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">N/A</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ N/A</div></div>
-					<div class="textpadright">N/A</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					23/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Eoin</div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='floatright text-left pad'>Dave</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>CAMEROON</div>
-					<img src='flags/large/Cameroon.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Brazil.png' style='float:left'>
-					<div class='floatright text-left pad'>BRAZIL</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">15.00</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 6.25</div></div>
-					<div class="textpadright">1.20</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					23/06 21:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Shane</div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='floatright text-left pad'>Niall</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>CROATIA</div>
-					<img src='flags/large/Croatia.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Mexico.png' style='float:left'>
-					<div class='floatright text-left pad'>MEXICO</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.35</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.30</div></div>
-					<div class="textpadright">3.00</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					23/06 21:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Shane</div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='floatright text-left pad'>Ming</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>ITALY</div>
-					<img src='flags/large/Italy.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Uruguay.png' style='float:left'>
-					<div class='floatright text-left pad'>URUGUAY</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">2.50</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.30</div></div>
-					<div class="textpadright">2.80</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					24/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Cian</div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='floatright text-left pad'>Alan</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>COSTA RICA</div>
-					<img src='flags/large/Costa Rica.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/England.png' style='float:left'>
-					<div class='floatright text-left pad'>ENGLAND</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">7.50</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 4.25</div></div>
-					<div class="textpadright">1.45</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					24/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Ming</div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='floatright text-left pad'>Eoin</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>JAPAN</div>
-					<img src='flags/large/Japan.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Colombia.png' style='float:left'>
-					<div class='floatright text-left pad'>COLOMBIA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">4.25</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.50</div></div>
-					<div class="textpadright">1.85</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					24/06 21:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Alan</div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='floatright text-left pad'>Shane</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>GREECE</div>
-					<img src='flags/large/Greece.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Ivory Coast.png' style='float:left'>
-					<div class='floatright text-left pad'>IVORY COAST</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">3.10</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.20</div></div>
-					<div class="textpadright">2.35</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					24/06 21:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Niall</div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='floatright text-left pad'>Dan & Joel</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>NIGERIA</div>
-					<img src='flags/large/Nigeria.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Argentina.png' style='float:left'>
-					<div class='floatright text-left pad'>ARGENTINA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">9.00</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 4.75</div></div>
-					<div class="textpadright">1.35</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					25/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Ming</div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='floatright text-left pad'>Dave</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>BOSNIA-HERZEGOVINA</div>
-					<img src='flags/large/Bosnia-Herzegovina.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Iran.png' style='float:left'>
-					<div class='floatright text-left pad'>IRAN</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.58</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.80</div></div>
-					<div class="textpadright">6.00</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					25/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dan & Joel</div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='floatright text-left pad'>Cian</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>HONDURAS</div>
-					<img src='flags/large/Honduras.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Switzerland.png' style='float:left'>
-					<div class='floatright text-left pad'>SWITZERLAND</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">6.00</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.80</div></div>
-					<div class="textpadright">1.58</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					25/06 21:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dave</div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/ming.png' style='float:left'>
-					<div class='floatright text-left pad'>Ming</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>ECUADOR</div>
-					<img src='flags/large/Ecuador.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/France.png' style='float:left'>
-					<div class='floatright text-left pad'>FRANCE</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">4.00</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.50</div></div>
-					<div class="textpadright">1.90</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					25/06 21:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dave</div>
-					<img src='lads/dave.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='floatright text-left pad'>Alan</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>UNITED STATES</div>
-					<img src='flags/large/United States.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Germany.png' style='float:left'>
-					<div class='floatright text-left pad'>GERMANY</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">8.50</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 4.60</div></div>
-					<div class="textpadright">1.38</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					26/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Niall</div>
-					<img src='lads/niall.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/eoin.png' style='float:left'>
-					<div class='floatright text-left pad'>Eoin</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>PORTUGAL</div>
-					<img src='flags/large/Portugal.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Ghana.png' style='float:left'>
-					<div class='floatright text-left pad'>GHANA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">1.75</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.60</div></div>
-					<div class="textpadright">4.75</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					26/06 17:00
-				</div>
-
-			</div>			<div class='match'  style=' ' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Alan</div>
-					<img src='lads/alan.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/shane.png' style='float:left'>
-					<div class='floatright text-left pad'>Shane</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>SOUTH KOREA</div>
-					<img src='flags/large/South Korea.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Belgium.png' style='float:left'>
-					<div class='floatright text-left pad'>BELGIUM</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">5.00</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.75</div></div>
-					<div class="textpadright">1.68</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					26/06 21:00
-				</div>
-
-			</div>			<div class='match'  style=' background-color:#3c3c3c;' >
-
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>Dan & Joel</div>
-					<img src='lads/dan & joel.png' style='float:left'>
-					<div class='center-sec'></div>
-					<img src='lads/cian.png' style='float:left'>
-					<div class='floatright text-left pad'>Cian</div>
-					<div style='clear:both'></div>
-				</div>
-				<div class='text-center matchcontainer'>
-					<div class='floatleft text-right pad'>ALGERIA</div>
-					<img src='flags/large/Algeria.png' style='float:left'>
-					<div class='center-sec'>V</div>
-					<img src='flags/large/Russia.png' style='float:left'>
-					<div class='floatright text-left pad'>RUSSIA</div>
-					<div style='clear:both'></div>
-				</div>
-<div class="matchcontainer" style="text-align:center; font-size:12px;">
-					<div class="textpadleft">5.50</div>
-					<div class="textpadcenter"><div style="color:#ccc; font-style:italic;">Draw @ 3.80</div></div>
-					<div class="textpadright">1.62</div>
-					<div style='clear:both'></div>
-				</div>				<div class='text-center matchcontainer location'>
-					
-					26/06 21:00
-				</div>
-
-			</div>			<!--END Match Schedule-->
-
-		</div> <!--end main container-->
-
-	</body>
+		</div><!--end groups-->
+		<div style="clear:both"></div>
+		<hr/>
+		<div class="note-div">
+			<a id='upcoming-link' href="#upcoming">&#x25BC; JUMP TO UPCOMING GAMES &#x25BC;</a>
+		</div>
+		<div>
+			<div data-bind="foreach: completedMatches">
+				<div class='match'  data-bind="attr{style: $index() % 2 == 0 ? '' : 'background-color:#3c3c3c'}" >
+
+					<div class='text-center matchcontainer'>
+						<div class='floatleft text-right pad' data-bind="text: $data.home().player.playerName()"></div>
+						<img data-bind="attr{src: 'images/lads/' + $data.home().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='center-sec'></div>
+						<img data-bind="attr{src: 'images/lads/' + $data.away().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<div style='clear:both'></div>
+					</div>
+					<div class='text-center matchcontainer'>
+						<div class='floatleft text-right pad' data-bind="text: $data.home().teamName()"></div>
+						<img data-bind="attr{src: 'images/flags/large/' + $data.home().teamName().toUpperCase() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='center-sec' data-bind="text: score"></div>
+						<img data-bind="attr{src: 'images/flags/large/' + $data.away().teamName() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='floatright text-left pad' data-bind="text: $data.away().teamName()"></div>
+						<div style='clear:both'></div>
+					</div>
+					<div class='text-center matchcontainer location' data-bind="text: dateString"></div>
+				</div>
+			</div><!--end completed-->
+		</div>
+		<hr/>
+		<div class="note-div">Upcoming Games</div>
+		<div>
+			<div id="upcoming" data-bind="foreach: upcomingMatches">
+				<div class='match' data-bind="attr{style:$index() % 2 == 0 ? '' : 'background-color:#3c3c3c'}" >
+
+					<div class='text-center matchcontainer'>
+						<div class='floatleft text-right pad' data-bind="text: $data.home().player.playerName()"></div>
+						<img data-bind="attr{src: 'images/lads/' + $data.home().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='center-sec'></div>
+						<img data-bind="attr{src: 'images/lads/' + $data.away().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<div style='clear:both'></div>
+					</div>
+					<div class='text-center matchcontainer'>
+						<div class='floatleft text-right pad' data-bind="text: $data.home().teamName()"></div>
+						<img data-bind="attr{src: 'images/flags/large/' + $data.home().teamName().toUpperCase() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='center-sec' data-bind="text: score"></div>
+						<img data-bind="attr{src: 'images/flags/large/' + $data.away().teamName() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='floatright text-left pad' data-bind="text: $data.away().teamName()"></div>
+						<div style='clear:both'></div>
+					</div>
+					<div class='text-center matchcontainer location' data-bind="text: dateString"></div>
+				</div>
+			</div><!--end upcoming-->
+		</div>
+	</div>
+</body>
 </html>

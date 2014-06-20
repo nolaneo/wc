@@ -1,0 +1,152 @@
+html {
+	background-color: #333;
+	font-family: 'Open Sans', sans-serif;
+	color: white;
+}
+
+h1 {
+	font-weight: 300;
+	text-align: center;
+}
+
+h2 {
+	line-height: 48px;
+	font-weight: 700;
+	font-size: 14px;
+	text-align: center;
+}
+
+.main-table {
+	width:100%;
+	margin-bottom: 50px;
+}
+
+#live-matches {
+	margin-bottom: 50px;
+}
+
+.main-table tbody tr:nth-child(odd) {
+   background-color: #555;
+}
+
+.main-table tbody tr {
+	font-size: 20px;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.country {
+	width: 500px;
+}
+
+.main-container {
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.flags {
+	width: 144px;
+}
+
+.big-flag {
+	padding: 0;
+	margin: 10px 20px 10px 20px;
+}
+
+.matchcontainer {
+	margin-left: auto;
+	margin-right: auto;
+	width: 750px;
+}
+
+.pad {
+	box-sizing: border-box;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.floatleft {
+	font-weight: 500;
+	float:left; width:261px;
+	height: 64px;
+	line-height: 64px;
+	font-size: 20px;
+}
+
+.center-sec {
+	font-weight: 500;
+	text-align: center;
+	float: left;
+	width: 100px;
+	height: 64px;
+	line-height: 64px;
+	font-size: 30px;
+}
+
+.floatright {
+	font-weight: 500;
+	float:right; width:261px;
+	height: 64px;
+	line-height: 64px;
+	font-size: 20px;
+}
+
+.location {
+	color: #ccc;
+	font-weight: 300;
+	font-size: 30px;
+}
+
+.match {
+	border-top: 1px solid #777;
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+
+.textpadleft {
+	float: left;
+	font-weight: 700;
+	margin-left: 261px;
+	width: 64px;
+}
+
+.textpadright {
+	float: left;
+	font-weight: 700;
+	margin-right: 261px;
+	width:64px;
+}
+
+.textpadcenter {
+	float: left;
+	font-weight: 300;
+	width:100px;
+}
+
+#upcoming-link {
+	color:#777; font-weight:300; text-size:20px; text-decoration: none;
+}
+
+.note-div {
+	width:800px; text-align:center; margin:25px 0px 25px 0px;
+}
+
+.table-title {
+	width:100px; text-align:center; float:left; margin-bottom: 5px; font-weight: 700; background-color: white; color: #333;
+}
+
+.alternate {
+	background-color: #ddd;
+}
