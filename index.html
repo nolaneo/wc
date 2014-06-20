@@ -34,7 +34,10 @@
 			generateTeams();
 			getTeamPoints();
 			getMatches();
+			getLiveMatches();
 			ko.applyBindings(ViewModel);
+
+			setInterval(getLiveMatches, 15000);
 		})
 		
 	</script>
@@ -79,7 +82,7 @@
 		<div>
 			<div data-bind="foreach: liveMatches">
 				<div class='match' style="background-color:#2c3d2a">
-					<p>Live Now</p>
+					<div class="text-center" style="font-weight:300; color:#ccc; margin-top:-10px;">Live Now</div>
 					<div class='text-center matchcontainer'>
 						<div class='floatleft text-right pad' data-bind="text: $data.home().player.playerName()"></div>
 						<img data-bind="attr{src: 'images/lads/' + $data.home().player.playerName().toLowerCase() + '.png', title:$data.teamName}" style='float:left'>
