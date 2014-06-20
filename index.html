@@ -57,7 +57,7 @@
 			<tbody data-bind="foreach: players">
 		        <tr>
 		            <td style="width: 200px;">
-		            	<img data-bind="attr{src: 'images/lads/' + $data.playerName() + '.png'}" style="height:32px;width:32px;float:left;"/>
+		            	<img data-bind="attr{src: 'images/lads/' + $data.playerName().toLowerCase() + '.png'}" style="height:32px;width:32px;float:left;"/>
 		            	<div data-bind="text: playerName" style="margin-left:10px;float:left"></div>
 		            </td>
 
@@ -82,17 +82,18 @@
 
 					<div class='text-center matchcontainer'>
 						<div class='floatleft text-right pad' data-bind="text: $data.home().player.playerName()"></div>
-						<img data-bind="attr{src: 'images/lads/' + $data.home().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<img data-bind="attr{src: 'images/lads/' + $data.home().player.playerName().toLowerCase() + '.png', title:$data.teamName}" style='float:left'>
 						<div class='center-sec'></div>
-						<img data-bind="attr{src: 'images/lads/' + $data.away().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<img data-bind="attr{src: 'images/lads/' + $data.away().player.playerName().toLowerCase() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='floatright text-left pad' data-bind="text: $data.away().player.playerName()"></div>
 						<div style='clear:both'></div>
 					</div>
 					<div class='text-center matchcontainer'>
-						<div class='floatleft text-right pad' data-bind="text: $data.home().teamName()"></div>
-						<img data-bind="attr{src: 'images/flags/large/' + $data.home().teamName().toUpperCase() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='floatleft text-right pad' data-bind="text: $data.home().teamName().toUpperCase()"></div>
+						<img data-bind="attr{src: 'images/flags/large/' + $data.home().teamName() + '.png', title:$data.teamName}" style='float:left'>
 						<div class='center-sec' data-bind="text: score"></div>
 						<img data-bind="attr{src: 'images/flags/large/' + $data.away().teamName() + '.png', title:$data.teamName}" style='float:left'>
-						<div class='floatright text-left pad' data-bind="text: $data.away().teamName()"></div>
+						<div class='floatright text-left pad' data-bind="text: $data.away().teamName().toUpperCase()"></div>
 						<div style='clear:both'></div>
 					</div>
 					<div class='text-center matchcontainer location' data-bind="text: dateString"></div>
@@ -140,17 +141,18 @@
 
 					<div class='text-center matchcontainer'>
 						<div class='floatleft text-right pad' data-bind="text: $data.home().player.playerName()"></div>
-						<img data-bind="attr{src: 'images/lads/' + $data.home().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<img data-bind="attr{src: 'images/lads/' + $data.home().player.playerName().toLowerCase() + '.png', title:$data.teamName}" style='float:left'>
 						<div class='center-sec'></div>
-						<img data-bind="attr{src: 'images/lads/' + $data.away().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<img data-bind="attr{src: 'images/lads/' + $data.away().player.playerName().toLowerCase() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='floatright text-left pad' data-bind="text: $data.away().player.playerName()"></div>
 						<div style='clear:both'></div>
 					</div>
 					<div class='text-center matchcontainer'>
-						<div class='floatleft text-right pad' data-bind="text: $data.home().teamName()"></div>
-						<img data-bind="attr{src: 'images/flags/large/' + $data.home().teamName().toUpperCase() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='floatleft text-right pad' data-bind="text: $data.home().teamName().toUpperCase()"></div>
+						<img data-bind="attr{src: 'images/flags/large/' + $data.home().teamName() + '.png', title:$data.teamName}" style='float:left'>
 						<div class='center-sec' data-bind="text: score"></div>
 						<img data-bind="attr{src: 'images/flags/large/' + $data.away().teamName() + '.png', title:$data.teamName}" style='float:left'>
-						<div class='floatright text-left pad' data-bind="text: $data.away().teamName()"></div>
+						<div class='floatright text-left pad' data-bind="text: $data.away().teamName().toUpperCase()"></div>
 						<div style='clear:both'></div>
 					</div>
 					<div class='text-center matchcontainer location' data-bind="text: dateString"></div>
@@ -165,17 +167,18 @@
 
 					<div class='text-center matchcontainer'>
 						<div class='floatleft text-right pad' data-bind="text: $data.home().player.playerName()"></div>
-						<img data-bind="attr{src: 'images/lads/' + $data.home().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<img data-bind="attr{src: 'images/lads/' + $data.home().player.playerName().toLowerCase() + '.png', title:$data.teamName}" style='float:left'>
 						<div class='center-sec'></div>
-						<img data-bind="attr{src: 'images/lads/' + $data.away().player.playerName() + '.png', title:$data.teamName}" style='float:left'>
+						<img data-bind="attr{src: 'images/lads/' + $data.away().player.playerName().toLowerCase() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='floatright text-left pad' data-bind="text: $data.away().player.playerName()"></div>
 						<div style='clear:both'></div>
 					</div>
 					<div class='text-center matchcontainer'>
-						<div class='floatleft text-right pad' data-bind="text: $data.home().teamName()"></div>
-						<img data-bind="attr{src: 'images/flags/large/' + $data.home().teamName().toUpperCase() + '.png', title:$data.teamName}" style='float:left'>
+						<div class='floatleft text-right pad' data-bind="text: $data.home().teamName().toUpperCase()"></div>
+						<img data-bind="attr{src: 'images/flags/large/' + $data.home().teamName() + '.png', title:$data.teamName}" style='float:left'>
 						<div class='center-sec' data-bind="text: score"></div>
 						<img data-bind="attr{src: 'images/flags/large/' + $data.away().teamName() + '.png', title:$data.teamName}" style='float:left'>
-						<div class='floatright text-left pad' data-bind="text: $data.away().teamName()"></div>
+						<div class='floatright text-left pad' data-bind="text: $data.away().teamName().toUpperCase()"></div>
 						<div style='clear:both'></div>
 					</div>
 					<div class='text-center matchcontainer location' data-bind="text: dateString"></div>
