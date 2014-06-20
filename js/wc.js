@@ -247,31 +247,38 @@ function getMatches() {
 		success: function(data) {
 			$.each( data, function( key, val ) {
 
-				var completed = (val["status"] === "completed");
-				var score = "v";
-				if (completed) {
-					score = val["home_team"]["goals"] + " - " + val["away_team"]["goals"];
-				};
-				var date = new Date(val["datetime"]);
-				var day, month, hour, minute;
+				if ( teamMap[val["home_team"]["code"]] !== undefined && 
+					 teamMap[val["away_team"]["code"]] !== undefined ) {
 
-				day = date.getDate();
-				month = date.getMonth() + 1;
-				hour = date.getHours();
-				hour = hour > 9 ? hour : '0' + hour;
-				minutes = date.getMinutes();
-				minutes = minutes > 9 ? minutes : '0' + minutes;
+					var completed = (val["status"] === "completed");
+					var score = "v";
+					if (completed) {
+						score = val["home_team"]["goals"] + " - " + val["away_team"]["goals"];
+					};
+					var date = new Date(val["datetime"]);
+					var day, month, hour, minute;
 
-				var dateString = day + "/" + month + " " + hour + ":" + minutes;
+					day = date.getDate();
+					month = date.getMonth() + 1;
+					hour = date.getHours();
+					hour = hour > 9 ? hour : '0' + hour;
+					minutes = date.getMinutes();
+					minutes = minutes > 9 ? minutes : '0' + minutes;
 
-				var match = new Match(val["home_team"]["code"], val["away_team"]["code"], date, dateString, score);
+					var dateString = day + "/" + month + " " + hour + ":" + minutes;
 
-				if (completed) {
-					ViewModel.completedMatches().push(match);
-				} else {
-					ViewModel.upcomingMatches().push(match);
+					var match = new Match(val["home_team"]["code"], val["away_team"]["code"], date, dateString, score);
+
+					if (completed) {
+						ViewModel.completedMatches().push(match);
+					} else {
+						ViewModel.upcomingMatches().push(match);
+					}
+
 				}
+
 			});
+
 			ViewModel.completedMatches.sort(compareMatches);
 			ViewModel.upcomingMatches.sort(compareMatches);
 		}
@@ -280,33 +287,36 @@ function getMatches() {
 }
 
 function getLiveMatches() {
-
 	$.ajax({
 		url: "http://worldcup.sfg.io/matches/current",
 		type: "GET",
 		success: function(data) {
+
+			if (data.length == 0) {
+				console.log("There are no live matches right now :" + new Date().toString());
+				return;
+			};
+			ViewModel.liveMatches.removeAll();
 			$.each( data, function( key, val ) {
 
-				var completed = (val["status"] === "completed");
-				var score = "v";
-				if (completed) {
-					score = val["home_team"]["goals"] + " - " + val["away_team"]["goals"];
-				};
-				var date = new Date(val["datetime"]);
-				var day, month, hour, minute;
+				console.log("Live : " + val["home_team"]["code"] + " v " + val["away_team"]["code"]);
+				var score = val["home_team"]["goals"] + " - " + val["away_team"]["goals"];
 
-				day = date.getDate();
-				month = date.getMonth() + 1;
+				var date = new Date();
+				var hour, minutes, seconds;
 				hour = date.getHours();
 				hour = hour > 9 ? hour : '0' + hour;
 				minutes = date.getMinutes();
 				minutes = minutes > 9 ? minutes : '0' + minutes;
+				seconds = date.getSeconds();
+				seconds = seconds > 9 ? seconds : '0' + seconds;
 
-				var dateString = day + "/" + month + " " + hour + ":" + minutes;
+				var dateString = "Updated : " + hour + ":" + minutes + ":" + seconds;
 
 				var match = new Match(val["home_team"]["code"], val["away_team"]["code"], date, dateString, score);
 
-				ViewModel.livematches().push(match);
+				ViewModel.liveMatches().push(match);
+				ViewModel.liveMatches.sort(compareMatches);
 	
 			});
 		}
