@@ -300,11 +300,9 @@ function getLiveMatches() {
 
 			$.each( data, function( key, val ) {
 
-				var completed = (val["status"] === "completed");
-				var score = "v";
-				if (completed) {
-					score = val["home_team"]["goals"] + " - " + val["away_team"]["goals"];
-				};
+				console.log("Live : " + val["home_team"]["code"] + " v " + val["away_team"]["code"]);
+				var score = val["home_team"]["goals"] + " - " + val["away_team"]["goals"];
+
 				var date = new Date(val["datetime"]);
 				var day, month, hour, minute;
 
@@ -319,7 +317,8 @@ function getLiveMatches() {
 
 				var match = new Match(val["home_team"]["code"], val["away_team"]["code"], date, dateString, score);
 
-				ViewModel.livematches().push(match);
+				ViewModel.liveMatches().push(match);
+				ViewModel.liveMatches.sort(compareMatches);
 	
 			});
 		}
