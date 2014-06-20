@@ -158,3 +158,17 @@ h2 {
 .groups {
 	outline: 1px solid #777;
 }
+
+.home {
+
+	font-weight: 300;
+	width: 350px;
+	float:left;
+}
+
+.away {
+
+	font-weight: 300;
+	width: 350px;
+	float:right;
+}

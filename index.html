@@ -99,7 +99,26 @@
 						<div class='floatright text-left pad' data-bind="text: $data.away().teamName().toUpperCase()"></div>
 						<div style='clear:both'></div>
 					</div>
-					<div class='text-center' style="color:#aaa; font-weight:300;" data-bind="text: dateString"><!--PUT MINUTES HERE--></div>
+					<div class='text-center' style="color:#aaa; font-weight:300; margin-bottom:10px;" data-bind="text: dateString"><!--PUT MINUTES HERE--></div>
+					<div data-bind="foreach: events">
+						<div data-bind="attr{class: $data.team}">
+
+							<!-- ko if: $data.team === "home" -->
+								<span data-bind="text: timeAt" style="float:right;font-weight:700;"></span>
+								<span style='float:right; margin-right:10px'><img data-bind="attr{src: 'images/icons/' + $data.matchEvent + '.png', title:$data.matchEvent}"></span>
+								<span data-bind="text: matchEvent" style="float:right; margin-right:10px;"></span>
+								<span data-bind="text: playerName" style="float:right; margin-right:10px;"></span>
+							<!-- /ko -->
+							<!-- ko if: $data.team === "away" -->
+								<span data-bind="text: timeAt" style="float:left; margin-right:10px; font-weight:700;"></span>
+								<span style='float:left; margin-right:10px'><img data-bind="attr{src: 'images/icons/' + $data.matchEvent + '.png', title:$data.matchEvent}"></span>
+								<span data-bind="text: matchEvent" style="float:left; margin-right:10px;"></span>
+								<span data-bind="text: playerName" style="float:left; margin-right:10px;"></span>
+							<!-- /ko -->
+							<div style='clear:both'></div>
+						</div>
+					</div>
+					<div style='clear:both'></div>
 				</div>
 			</div><!--end live-->
 		</div>

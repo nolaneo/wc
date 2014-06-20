@@ -68,6 +68,7 @@ function Match (home, away, date, dateString, score) {
 	this.dateString = ko.observable(dateString);
 	this.date = ko.observable(date);
 	this.score = ko.observable(score);
+	this.events = ko.observableArray();
 }
 
 
@@ -286,6 +287,17 @@ function getMatches() {
 
 }
 
+function Event(matchEvent, playerName, timeAt, team) {
+	this.matchEvent = matchEvent;
+	this.playerName = playerName;
+	this.timeAt =  timeAt;
+	this.team = team;
+}
+
+function sortEvents(a,b) {
+	return a.timeAt < b.timeAt;
+}
+
 function getLiveMatches() {
 	$.ajax({
 		url: "http://worldcup.sfg.io/matches/current",
@@ -314,6 +326,37 @@ function getLiveMatches() {
 				var dateString = "Updated : " + hour + ":" + minutes + ":" + seconds;
 
 				var match = new Match(val["home_team"]["code"], val["away_team"]["code"], date, dateString, score);
+
+
+				var homeevents = val["home_team_events"] ;
+				$.each(homeevents, function( key, val ) {
+					if (val["type_of_event"] == "goal")
+						match.events().push(new Event("Goal", val["player"], val["time"], "home"));
+					else if (val["type_of_event"] == "goal-own")
+						match.events().push(new Event("Goal (Own)", val["player"], val["time"], "away"));
+					else if (val["type_of_event"] == "goal-penalty")
+						match.events().push(new Event("Penalty", val["player"], val["time"], "home"));
+					else if (val["type_of_event"] == "yellow-card")
+						match.events().push(new Event("Yellow Card", val["player"], val["time"], "home"));
+					else if (val["type_of_event"] == "red-card")
+						match.events().push(new Event("Red Card", val["player"], val["time"], "home"));
+				});
+
+				var awayevents = val["away_team_events"] ;
+				$.each(awayevents, function( key, val ) {
+					if (val["type_of_event"] == "goal")
+						match.events().push(new Event("Goal", val["player"], val["time"], "away"));
+					else if (val["type_of_event"] == "goal-own")
+						match.events().push(new Event("Own Goal", val["player"], val["time"], "home"));
+					else if (val["type_of_event"] == "goal-penalty")
+						match.events().push(new Event("Penalty", val["player"], val["time"], "away"));
+					else if (val["type_of_event"] == "yellow-card")
+						match.events().push(new Event("Yellow Card", val["player"], val["time"], "away"));
+					else if (val["type_of_event"] == "red-card")
+						match.events().push(new Event("Red Card", val["player"], val["time"], "away"));
+				});
+
+				match.events.sort(sortEvents);
 
 				ViewModel.liveMatches().push(match);
 				ViewModel.liveMatches.sort(compareMatches);
