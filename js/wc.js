@@ -247,7 +247,7 @@ function getMatches() {
 		success: function(data) {
 			$.each( data, function( key, val ) {
 
-				if ( teamMap[val["home_team"]["code"]] !== undefined || 
+				if ( teamMap[val["home_team"]["code"]] !== undefined && 
 					 teamMap[val["away_team"]["code"]] !== undefined ) {
 
 					var completed = (val["status"] === "completed");
