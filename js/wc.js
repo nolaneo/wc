@@ -287,7 +287,6 @@ function getMatches() {
 }
 
 function getLiveMatches() {
-	ViewModel.liveMatches.removeAll();
 	$.ajax({
 		url: "http://worldcup.sfg.io/matches/current",
 		type: "GET",
@@ -297,23 +296,22 @@ function getLiveMatches() {
 				console.log("There are no live matches right now :" + new Date().toString());
 				return;
 			};
-
+			ViewModel.liveMatches.removeAll();
 			$.each( data, function( key, val ) {
 
 				console.log("Live : " + val["home_team"]["code"] + " v " + val["away_team"]["code"]);
 				var score = val["home_team"]["goals"] + " - " + val["away_team"]["goals"];
 
-				var date = new Date(val["datetime"]);
-				var day, month, hour, minute;
-
-				day = date.getDate();
-				month = date.getMonth() + 1;
+				var date = new Date();
+				var hour, minutes, seconds;
 				hour = date.getHours();
 				hour = hour > 9 ? hour : '0' + hour;
 				minutes = date.getMinutes();
 				minutes = minutes > 9 ? minutes : '0' + minutes;
+				seconds = date.getSeconds();
+				seconds = seconds > 9 ? seconds : '0' + seconds;
 
-				var dateString = day + "/" + month + " " + hour + ":" + minutes;
+				var dateString = "Updated : " + hour + ":" + minutes + ":" + seconds;
 
 				var match = new Match(val["home_team"]["code"], val["away_team"]["code"], date, dateString, score);
 

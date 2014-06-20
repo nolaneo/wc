@@ -37,7 +37,7 @@
 			getLiveMatches();
 			ko.applyBindings(ViewModel);
 
-			setInterval(getLiveMatches, 30000);
+			setInterval(getLiveMatches, 15000);
 		})
 		
 	</script>
@@ -99,7 +99,7 @@
 						<div class='floatright text-left pad' data-bind="text: $data.away().teamName().toUpperCase()"></div>
 						<div style='clear:both'></div>
 					</div>
-					<div class='text-center matchcontainer location'><!--PUT MINUTES HERE--></div>
+					<div class='text-center' style="color:#aaa; font-weight:300;" data-bind="text: dateString"><!--PUT MINUTES HERE--></div>
 				</div>
 			</div><!--end live-->
 		</div>
