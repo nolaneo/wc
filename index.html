@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
+	<link href="images/favicon.ico" rel="icon" type="image/x-icon" />
 	<title>FFE WC Sweepstakes</title>
 
 	<script src="js/knockout.js"></script> 
@@ -78,8 +78,8 @@
 
 		<div>
 			<div data-bind="foreach: liveMatches">
-				<div class='match'  data-bind="attr{style: $index() % 2 == 0 ? '' : 'background-color:#3c3c3c'}" >
-
+				<div class='match' style="background-color:#2c3d2a">
+					<p>Live Now</p>
 					<div class='text-center matchcontainer'>
 						<div class='floatleft text-right pad' data-bind="text: $data.home().player.playerName()"></div>
 						<img data-bind="attr{src: 'images/lads/' + $data.home().player.playerName().toLowerCase() + '.png', title:$data.teamName}" style='float:left'>
@@ -96,7 +96,7 @@
 						<div class='floatright text-left pad' data-bind="text: $data.away().teamName().toUpperCase()"></div>
 						<div style='clear:both'></div>
 					</div>
-					<div class='text-center matchcontainer location' data-bind="text: dateString"></div>
+					<div class='text-center matchcontainer location'><!--PUT MINUTES HERE--></div>
 				</div>
 			</div><!--end live-->
 		</div>
