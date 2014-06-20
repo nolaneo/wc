@@ -306,6 +306,7 @@ function getLiveMatches() {
 
 			if (data.length == 0) {
 				console.log("There are no live matches right now :" + new Date().toString());
+				ViewModel.liveMatches.removeAll();
 				return;
 			};
 			ViewModel.liveMatches.removeAll();
