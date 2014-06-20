@@ -115,8 +115,8 @@
 		<div class="table-title alternate">H</div>
 		<div style="clear:both"></div>
 
-		<div data-bind="foreach: groups">
-			<table style="width:100px;float:left;font-size:7pt;border-left:1px solid #777; border-right:1px solid #777; ">
+		<div data-bind="foreach: groups" class="groups">
+			<table class="group-table"   data-bind="attr{style: $index() % 2 == 0 ? 'background-color:#555' : 'background-color:#333'}" >
 				<thead>
 					<th>Group</th>
 					<th></th>
@@ -134,7 +134,6 @@
 			</table>
 		</div><!--end groups-->
 		<div style="clear:both"></div>
-		<hr/>
 		<div class="note-div">
 			<a id='upcoming-link' href="#upcoming">&#x25BC; JUMP TO UPCOMING GAMES &#x25BC;</a>
 		</div>
