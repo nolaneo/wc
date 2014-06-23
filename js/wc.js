@@ -341,6 +341,10 @@ function getLiveMatches() {
 						match.events().push(new Event("Yellow Card", val["player"], val["time"], "home"));
 					else if (val["type_of_event"] == "red-card")
 						match.events().push(new Event("Red Card", val["player"], val["time"], "home"));
+					else if (val["type_of_event"] == "substitution-out")
+						match.events().push(new Event("Sub Out", val["player"], val["time"], "home"));
+					else if (val["type_of_event"] == "substitution-in")
+						match.events().push(new Event("Sub In", val["player"], val["time"], "home"));
 				});
 
 				var awayevents = val["away_team_events"] ;
@@ -355,6 +359,10 @@ function getLiveMatches() {
 						match.events().push(new Event("Yellow Card", val["player"], val["time"], "away"));
 					else if (val["type_of_event"] == "red-card")
 						match.events().push(new Event("Red Card", val["player"], val["time"], "away"));
+					else if (val["type_of_event"] == "substitution-out")
+						match.events().push(new Event("Sub Out", val["player"], val["time"], "away"));
+					else if (val["type_of_event"] == "substitution-in")
+						match.events().push(new Event("Sub In", val["player"], val["time"], "away"));
 				});
 
 				match.events.sort(sortEvents);
