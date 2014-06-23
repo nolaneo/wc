@@ -331,40 +331,40 @@ function getLiveMatches() {
 
 				var homeevents = val["home_team_events"] ;
 				$.each(homeevents, function( key, val ) {
-					if (val["type_of_event"] == "goal")
+					if (val["type_of_event"] === "goal")
 						match.events().push(new Event("Goal", val["player"], val["time"], "home"));
-					else if (val["type_of_event"] == "goal-own")
+					else if (val["type_of_event"] === "goal-own")
 						match.events().push(new Event("Goal (Own)", val["player"], val["time"], "away"));
-					else if (val["type_of_event"] == "goal-penalty")
+					else if (val["type_of_event"] === "goal-penalty")
 						match.events().push(new Event("Penalty", val["player"], val["time"], "home"));
-					else if (val["type_of_event"] == "yellow-card")
+					else if (val["type_of_event"] === "yellow-card")
 						match.events().push(new Event("Yellow Card", val["player"], val["time"], "home"));
-					else if (val["type_of_event"] == "red-card")
+					else if (val["type_of_event"] === "red-card")
 						match.events().push(new Event("Red Card", val["player"], val["time"], "home"));
-					else if (val["type_of_event"] == "substitution-out")
+					else if (val["type_of_event"] === "substitution-out" || val["type_of_event"] === "substitution-out halftime")
 						match.events().push(new Event("Sub Out", val["player"], val["time"], "home"));
-					else if (val["type_of_event"] == "substitution-in")
+					else if (val["type_of_event"] === "substitution-in" || val["type_of_event"] === "substitution-in halftime")
 						match.events().push(new Event("Sub In", val["player"], val["time"], "home"));
 				});
 
 				var awayevents = val["away_team_events"] ;
 				$.each(awayevents, function( key, val ) {
-					if (val["type_of_event"] == "goal")
+					if (val["type_of_event"] === "goal")
 						match.events().push(new Event("Goal", val["player"], val["time"], "away"));
-					else if (val["type_of_event"] == "goal-own")
+					else if (val["type_of_event"] === "goal-own")
 						match.events().push(new Event("Own Goal", val["player"], val["time"], "home"));
-					else if (val["type_of_event"] == "goal-penalty")
+					else if (val["type_of_event"] === "goal-penalty")
 						match.events().push(new Event("Penalty", val["player"], val["time"], "away"));
-					else if (val["type_of_event"] == "yellow-card")
+					else if (val["type_of_event"] === "yellow-card")
 						match.events().push(new Event("Yellow Card", val["player"], val["time"], "away"));
-					else if (val["type_of_event"] == "red-card")
+					else if (val["type_of_event"] === "red-card")
 						match.events().push(new Event("Red Card", val["player"], val["time"], "away"));
-					else if (val["type_of_event"] == "substitution-out")
+					else if (val["type_of_event"] === "substitution-out" || val["type_of_event"] === "substitution-out halftime")
 						match.events().push(new Event("Sub Out", val["player"], val["time"], "away"));
-					else if (val["type_of_event"] == "substitution-in")
+					else if (val["type_of_event"] === "substitution-in" || val["type_of_event"] === "substitution-in halftime")
 						match.events().push(new Event("Sub In", val["player"], val["time"], "away"));
 				});
-
+substitution-in halftime
 				match.events.sort(sortEvents);
 
 				ViewModel.liveMatches().push(match);
