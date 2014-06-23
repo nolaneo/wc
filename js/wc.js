@@ -364,7 +364,7 @@ function getLiveMatches() {
 					else if (val["type_of_event"] === "substitution-in" || val["type_of_event"] === "substitution-in halftime")
 						match.events().push(new Event("Sub In", val["player"], val["time"], "away"));
 				});
-substitution-in halftime
+
 				match.events.sort(sortEvents);
 
 				ViewModel.liveMatches().push(match);
