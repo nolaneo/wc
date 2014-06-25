@@ -176,6 +176,12 @@
 						<div style='clear:both'></div>
 					</div>
 					<div class='text-center matchcontainer location' data-bind="text: dateString"></div>
+					<!-- ko if: $parent.completedMatches().length + $index() === 47 -->
+						<hr/>
+						<h1 class="text-center">Knockout Stages</h1>
+						<hr/>
+					<!-- /ko -->
+
 				</div>
 			</div><!--end completed-->
 		</div>
@@ -203,6 +209,12 @@
 					</div>
 					<div class='text-center matchcontainer location' data-bind="text: dateString"></div>
 				</div>
+				<!-- ko if: $parent.completedMatches().length + $index() === 47 -->
+					<hr/>
+					<h1 class="text-center">Knockout Stages</h1>
+					<hr/>
+				<!-- /ko -->
+
 			</div><!--end upcoming-->
 		</div>
 	</div>
