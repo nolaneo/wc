@@ -172,3 +172,30 @@ h2 {
 	width: 350px;
 	float:right;
 }
+
+.ko-match {
+	border: 1px solid white;
+	width: 114px;
+	height: 100px;
+}
+
+.qf {
+	margin-top: 50px;
+	margin-bottom: 100px;
+}
+
+.sf {
+	margin-top: 150px;
+	margin-bottom: 150px;
+}
+
+
+.final {
+	margin: 100 0 100 0;
+	width: 114px;
+	height: 200px;
+}
+
+.float {
+	float:left;
+}

@@ -339,6 +339,8 @@ function getLiveMatches() {
 						match.events().push(new Event("Penalty", val["player"], val["time"], "home"));
 					else if (val["type_of_event"] === "yellow-card")
 						match.events().push(new Event("Yellow Card", val["player"], val["time"], "home"));
+					else if (val["type_of_event"] === "yellow-card-second")
+						match.events().push(new Event("Red Card (Second Yellow)", val["player"], val["time"], "home"));
 					else if (val["type_of_event"] === "red-card")
 						match.events().push(new Event("Red Card", val["player"], val["time"], "home"));
 					else if (val["type_of_event"] === "substitution-out" || val["type_of_event"] === "substitution-out halftime")
@@ -357,6 +359,8 @@ function getLiveMatches() {
 						match.events().push(new Event("Penalty", val["player"], val["time"], "away"));
 					else if (val["type_of_event"] === "yellow-card")
 						match.events().push(new Event("Yellow Card", val["player"], val["time"], "away"));
+					else if (val["type_of_event"] === "yellow-card-second")
+						match.events().push(new Event("Red Card (Second Yellow)", val["player"], val["time"], "away"));
 					else if (val["type_of_event"] === "red-card")
 						match.events().push(new Event("Red Card", val["player"], val["time"], "away"));
 					else if (val["type_of_event"] === "substitution-out" || val["type_of_event"] === "substitution-out halftime")
